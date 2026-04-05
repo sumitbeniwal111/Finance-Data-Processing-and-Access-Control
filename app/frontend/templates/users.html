@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block title %}Users{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div>
+        <p class="eyebrow">Access Control</p>
+        <h2>User Management</h2>
+        <p class="muted">A minimal admin-facing view into roles and active users.</p>
+    </div>
+</section>
+
+<section class="grid-two">
+    <article class="panel">
+        <h3>Create User</h3>
+        <form method="post" action="/app/users" class="stack">
+            <label>
+                Full name
+                <input type="text" name="full_name" required>
+            </label>
+            <label>
+                Email
+                <input type="email" name="email" required>
+            </label>
+            <label>
+                Role
+                <select name="role">
+                    {% for item in roles %}
+                    <option value="{{ item.value }}">{{ item.value|title }}</option>
+                    {% endfor %}
+                </select>
+            </label>
+            <button type="submit" class="button">Create User</button>
+        </form>
+    </article>
+
+    <article class="panel">
+        <h3>Role Notes</h3>
+        <ul class="plain-list">
+            <li><strong>Viewer:</strong> dashboard only</li>
+            <li><strong>Analyst:</strong> dashboard and records</li>
+            <li><strong>Admin:</strong> full access, including user and record creation</li>
+        </ul>
+    </article>
+</section>
+
+<section class="panel">
+    <h3>User Directory</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Status</th>
+                <th>Created</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in users %}
+            <tr>
+                <td>{{ item.full_name }}</td>
+                <td>{{ item.email }}</td>
+                <td>{{ item.role.value|title }}</td>
+                <td>{{ item.status.value|title }}</td>
+                <td>{{ item.created_at.strftime("%Y-%m-%d") }}</td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="5" class="muted">No users found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+{% endblock %}

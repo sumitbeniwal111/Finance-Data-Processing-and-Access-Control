@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Finance Dashboard{% endblock %}</title>
+    <link rel="stylesheet" href="/static/css/app.css">
+</head>
+<body>
+    <header class="topbar">
+        <div>
+            <p class="eyebrow">Finance Backend Demo</p>
+            <h1>Zorvyn Finance Dashboard</h1>
+        </div>
+        <div class="topbar-actions">
+            {% if current_user %}
+            <div class="user-chip">
+                <strong>{{ current_user.full_name }}</strong>
+                <span>{{ current_user.role.value|title }}</span>
+            </div>
+            <a class="button secondary" href="/app/logout">Logout</a>
+            {% endif %}
+        </div>
+    </header>
+
+    <div class="layout {% if not current_user %}no-sidebar{% endif %}">
+        {% if current_user %}
+        <aside class="sidebar">
+            <a href="/app/dashboard" class="nav-link">Dashboard</a>
+            {% if can_view_records %}
+            <a href="/app/records" class="nav-link">Records</a>
+            {% endif %}
+            {% if can_manage_users %}
+            <a href="/app/users" class="nav-link">Users</a>
+            {% endif %}
+            <a href="/docs" class="nav-link">API Docs</a>
+        </aside>
+        {% endif %}
+
+        <main class="content {% if not current_user %}auth-only{% endif %}">
+            {% if message %}
+            <div class="notice success">{{ message }}</div>
+            {% endif %}
+            {% if error %}
+            <div class="notice error">{{ error }}</div>
+            {% endif %}
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+</body>
+</html>

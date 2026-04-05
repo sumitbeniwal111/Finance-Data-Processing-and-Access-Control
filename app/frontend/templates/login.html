@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}Sign In{% endblock %}
+
+{% block content %}
+<section class="panel auth-panel">
+    <div>
+        <p class="eyebrow">Simple Frontend</p>
+        <h2>Token Sign In</h2>
+        <p class="muted">
+            This UI is intentionally minimal so the backend remains the main focus.
+            Enter any valid bearer token to inspect the data.
+        </p>
+    </div>
+
+    <form action="/app/login" method="post" class="stack">
+        <label>
+            Access token
+            <input type="text" name="token" placeholder="admin-demo-token" required>
+        </label>
+        <button type="submit" class="button">Open Dashboard</button>
+    </form>
+
+    <div class="token-grid">
+        <div class="token-card">
+            <strong>Admin</strong>
+            <code>admin-demo-token</code>
+        </div>
+        <div class="token-card">
+            <strong>Analyst</strong>
+            <code>analyst-demo-token</code>
+        </div>
+        <div class="token-card">
+            <strong>Viewer</strong>
+            <code>viewer-demo-token</code>
+        </div>
+    </div>
+</section>
+{% endblock %}

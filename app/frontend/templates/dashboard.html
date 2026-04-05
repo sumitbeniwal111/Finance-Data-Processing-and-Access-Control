@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div>
+        <p class="eyebrow">Overview</p>
+        <h2>Finance Summary</h2>
+        <p class="muted">A quick read of the data your backend is serving.</p>
+    </div>
+    <a href="/app/records" class="button secondary {% if not can_view_records %}disabled{% endif %}">Explore Records</a>
+</section>
+
+<section class="stat-grid">
+    <article class="stat-card">
+        <span>Total Income</span>
+        <strong>{{ summary.total_income }}</strong>
+    </article>
+    <article class="stat-card">
+        <span>Total Expenses</span>
+        <strong>{{ summary.total_expenses }}</strong>
+    </article>
+    <article class="stat-card">
+        <span>Net Balance</span>
+        <strong>{{ summary.net_balance }}</strong>
+    </article>
+    <article class="stat-card">
+        <span>Total Records</span>
+        <strong>{{ summary.total_records }}</strong>
+    </article>
+</section>
+
+<section class="grid-two">
+    <article class="panel">
+        <h3>Category Totals</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Category</th>
+                    <th>Type</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in category_totals %}
+                <tr>
+                    <td>{{ item.category }}</td>
+                    <td>{{ item.type.value|title }}</td>
+                    <td>{{ item.total }}</td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="3" class="muted">No category totals yet.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </article>
+
+    <article class="panel">
+        <h3>Recent Activity</h3>
+        <div class="activity-list">
+            {% for item in recent_activity %}
+            <div class="activity-item">
+                <div>
+                    <strong>{{ item.category }}</strong>
+                    <p class="muted">{{ item.notes or "No notes" }}</p>
+                </div>
+                <div class="right">
+                    <span>{{ item.type.value|title }}</span>
+                    <strong>{{ item.amount }}</strong>
+                </div>
+            </div>
+            {% else %}
+            <p class="muted">No recent records found.</p>
+            {% endfor %}
+        </div>
+    </article>
+</section>
+
+<section class="panel">
+    <h3>Monthly Trend</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Period</th>
+                <th>Income</th>
+                <th>Expense</th>
+                <th>Net</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in trends %}
+            <tr>
+                <td>{{ item.period }}</td>
+                <td>{{ item.income }}</td>
+                <td>{{ item.expense }}</td>
+                <td>{{ item.net }}</td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="4" class="muted">No trend data available.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+{% endblock %}
